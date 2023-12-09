@@ -141,14 +141,20 @@ class DataCtrl():
             time.sleep(1)
     
     def DecodeMsg(self):
-        temp = self.RowMsg.decode("ascii")
-        if len(temp) > 0:
-            if "@" in temp:
-                self.msg = temp.split("@")
-                self.msg.remove("")
-                self.DataSensor = self.msg
-                for i in range(len(self.DataSensor)):
-                    self.DataSensor[i] = float(self.DataSensor[i])
+        # temp = self.RowMsg.decode("ascii")
+        temp = str(self.RowMsg[0:len(self.RowMsg)].decode("utf-8"))
+        self.msg = temp.split("@")
+        # if len(temp) > 0:
+        #     self.msg = temp.split("@")
+        #     self.msg.remove("")
+        #     self.DataSensor = self.msg
+        #     for i in range(len(self.DataSensor)):
+        #         self.DataSensor[i] = float(self.DataSensor[i])
+        try:
+            for i in range(len(self.msg)):
+                self.DataSensor[i] = float(self.msg[i])
+        except Exception as e:
+            print(e)
 
     def CheckData(self):
         if os.path.exists(self.filename):

@@ -52,7 +52,7 @@ class SerialCtrl():
                 datas = self.ser.readline()
                 gui.data.RowMsg = datas
                 gui.data.DecodeMsg()
-                print(gui.data.DataSensor)
+                # print(gui.data.DataSensor)
                 gui.UpdateSensorText()
             except Exception as e:
                 print(e)
