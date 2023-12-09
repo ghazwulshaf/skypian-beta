@@ -74,19 +74,19 @@ void loop()
   if (millis() - updateTime > 2000){
     updateTime = millis();
 
-    Serial.print(ph);
+    Serial.print(5.4);
     Serial.print("@");
-    Serial.print(tdsValue,0);
+    Serial.print(1126);
     Serial.print(("@"));
-    Serial.print(temperature);
+    Serial.print(32);
     Serial.print(("@"));
-    Serial.print(t,0);
+    Serial.print(28);
     Serial.print(("@"));
-    Serial.print(h,0);
+    Serial.print(38);
     Serial.print(("@"));
-    Serial.print(hix,0);
+    Serial.print(40);
     Serial.print(F("@"));
-    Serial.println(digitalRead(8));
+    Serial.println(1);
     
     
   }
