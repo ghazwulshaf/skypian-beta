@@ -1,3 +1,4 @@
+import asyncio
 import random
 
 sensor1 = 0
@@ -8,9 +9,16 @@ sensor5 = 0
 sensor6 = 0
 sensor7 = 0
 
-def getSensor1():
-    global sensor1
-    return sensor1
+async def upSensor1(var):
+    while True:
+        var = random.randrange(0,100)
+        await asyncio.sleep(1)
+
+# loop1 = asyncio.get_event_loop()
+
+def getSensor1(sensor):
+    asyncio.ensure_future(upSensor1(sensor))
+    # loop1.run_forever()
 
 def getSensor2():
     global sensor2

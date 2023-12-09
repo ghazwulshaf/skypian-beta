@@ -1,22 +1,25 @@
-import tkinter
+import csv
+import pandas as pd
 
-master=tkinter.Tk()
-master.title("grid() method")
-master.geometry("350x275")
+filename = "data_sensor.csv"
 
-button1=tkinter.Button(master, text="button1")
-button1.grid(row=1,column=0)
+df = pd.read_csv(filename)
+datas = df.tail(120)
 
-button2=tkinter.Button(master, text="button2")
-button2.grid(row=2,column=2)
+hour = datas["Hour"]
+minute = datas["Minute"]
 
-button3=tkinter.Button(master, text="button3")
-button3.grid(row=3,column=3)
+xList = []
+for i in range(len(datas)):
+    x = float(hour[i]) + (float(minute[i]) / 60.0)
+    xList.append(x)
 
-button4=tkinter.Button(master, text="button4")
-button4.grid(row=4,column=4)
+y1List = datas["pH"]
+y2List = datas["TDS"]
+y3List = datas["Humidity"]
+y4List = datas["Heat Index"]
+y5List = datas["Water Temp"]
+y6List = datas["Air Temp"]
+y7List = datas["Fert Level"]
 
-button5=tkinter.Button(master, text="button5")
-button5.grid(row=5,column=5)
-
-master.mainloop()
+print(y1List)
