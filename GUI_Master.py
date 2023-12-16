@@ -15,6 +15,7 @@ class RootGUI:
         self.root.geometry("%dx%d" % (800, 480))
         self.root.config(bg="white")
         self.root.resizable(False, False)
+        # self.root.attributes("-fullscreen", True)
 
 class MasterGUI():
     def __init__(self, root, serial, data):
@@ -132,6 +133,26 @@ class MasterGUI():
             self.drop_com["state"] = "active"
             self.drop_baud["state"] = "active"
 
+    # def auto_connect(self):
+    #     self.serial.getCOMList()
+    #     coms = self.serial.com_list
+    #     self.serial.SerialOpen(self)
+
+    #     if self.serial.ser.status:
+    #         InfoMsg = f"Successful UART connection using {self.clicked_com.get()}"
+
+    #         self.data.CheckData()
+    #         self.start_stream()
+
+    #         self.t2 = threading.Thread(name="t2", target=self.Animate, daemon=True)
+            
+    #         self.serial.t1.start()
+    #         self.t2.start()
+    #         self.data.t3.start()
+    #     else:
+    #         ErrorMsg = f"Failure to estabish UART connection using {self.clicked_com.get()}"
+    #         messagebox.showerror("showerror", ErrorMsg)
+
     def start_stream(self):
         self.serial.t1 = threading.Thread(name="t1", target=self.serial.SerialDataStream, args=(self,), daemon=True)
         self.data.t3 = threading.Thread(name="t3", target=self.data.DataStream, daemon=True)
@@ -227,16 +248,14 @@ class MasterGUI():
             try:
                 self.data.ReadData()
                 self.ax.clear()
-                if self.data.xList[-1] < 4:
+                if self.data.xList[-1] < 2:
                     self.ax.set_xlim([0, self.data.xList[-1]])
                 else:
-                    self.ax.set_xlim([(self.data.xList[-1] - 4), self.data.xList[-1]])
+                    self.ax.set_xlim([(self.data.xList[-1] - 2), self.data.xList[-1]])
                 self.setPlot()
-                # self.ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
                 self.canvas.draw()
             except Exception as e:
                 print(e)
-                # self.aniThreading = False
 
     def setGp1(self):
         if self.data.stt_gp1 in "OFF":
@@ -302,8 +321,8 @@ class MasterGUI():
         self.frm_actuator.rowconfigure(0, weight=1)
         self.frm_actuator.columnconfigure([0,1], minsize=width/2, weight=1)
 
-        self.btn_ac1 = Button(self.frm_actuator, text=(self.data.nm_ac1 + ": " + self.data.stt_ac1), command=self.turnAc1)
-        self.btn_ac2 = Button(self.frm_actuator, text=(self.data.nm_ac2 + ": " + self.data.stt_ac2), command=self.turnAc2)
+        self.btn_ac1 = Button(self.frm_actuator, text=(self.data.nm_ac1 + ": " + self.data.stt_ac1), command=self.turnAc1, state=DISABLED)
+        self.btn_ac2 = Button(self.frm_actuator, text=(self.data.nm_ac2 + ": " + self.data.stt_ac2), command=self.turnAc2, state=DISABLED)
 
     def turnAc1(self):
         if self.data.stt_ac1 in "OFF":
@@ -353,10 +372,14 @@ class MasterGUI():
             self.data.stt_act1 = "MANUAL"
             self.btn_act1["text"] = self.data.nm_act1 + ": " + self.data.stt_act1
             self.btn_act1["bg"] = "grey"
+            self.btn_ac1["state"] = "active"
+            self.btn_ac2["state"] = "active"
         else:
             self.data.stt_act1 = "AUTO"
             self.btn_act1["text"] = self.data.nm_act1 + ": " + self.data.stt_act1
             self.btn_act1["bg"] = self.data.clr_btn
+            self.btn_ac1["state"] = "disabled"
+            self.btn_ac2["state"] = "disabled"
 
     def harvest(self):
         dlg_harvest = messagebox.askyesno(title='Harvest?', message='Are you sure you want to reset data?', parent=self.root, icon='warning')

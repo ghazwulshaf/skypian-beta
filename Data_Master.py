@@ -133,7 +133,7 @@ class DataCtrl():
         self.msg = []
     
     def DataStream(self):
-        schedule.every(5).minutes.do(self.StoreData)
+        schedule.every(1).minutes.do(self.StoreData)
         # schedule.every(5).minutes.do(self.PublishData)
 
         while True:
